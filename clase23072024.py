@@ -1,3 +1,4 @@
+
 lista = ['Carlos', 3.14, False, [1,2,6,1,0,-1], True]
 
 print(lista)
