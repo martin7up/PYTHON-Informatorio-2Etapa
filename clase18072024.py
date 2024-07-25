@@ -5,6 +5,9 @@
 
 '''Escribe un programa que solicite al usuario su nombre y lo imprima en la pantalla'''
 
+#Alternativa perezosa:
+#print('El nombre ingresado es :',input('Ingrese su nombre a continuacion : '))
+
 # while True :
 #     nombre = input('\n\nEjercicio 1 >>> \nIngrese su nombre completo : >>> ').strip()
 #     if str.isalpha(nombre) :
@@ -43,8 +46,8 @@
 
 '''Escriba un programa que calcule la suma de dos numeros y la imprima en pantalla.'''
 
-# def es_numero_real(cadena : str) -> bool: 
-#     return num1.isnumeric() or (num1.count('.') == 1 and num1.replace('.','1',1).isnumeric())#Cortocircuito por True 
+def es_numero_real(cadena : str) -> bool: 
+    return cadena.isnumeric() or (cadena.count('.') == 1 and cadena.replace('.','1',1).isnumeric())#Cortocircuito por True 
 
 # while True :
      
@@ -65,3 +68,25 @@
 #         print('Parece que los caracteres ingresados no tienen el formato correcto; intente de nuevo...')
 
 # print(f'La suma {num1} + {num2} tiene por resultado : {num1 + num2}')
+
+'''Crea un programa que pida al usuario elr adio de un circulo y calcule su area.'''
+
+# PI = 3.1416
+# radio = float (input('Ingrese el radio del circulo para calcular el perimetro, area y spuerficie(esfera) ¿? : >>> ').strip())
+# print(f'El perimetro es : {2*PI*radio:.4f} u.m.\nEl area es : {PI*radio**2:.4f} u.m.\nLa superficie (esfera 3D) : {(4/3)*PI*radio**2:.4f} u.m.')
+
+'''Escribe un programa que pida la base y altura de un triangulo Isoceles y retorne su area por pantalla.'''
+# := operador walrus... cortesia de GPT.
+
+base = 0
+altura = 0
+print('Calcular el area de un triangulo Isoceles.')
+bandera = False
+while bandera := not es_numero_real( base := input('Ingrese un numero real ¿? : >>> ' if not bandera else '...algo salio mal; intente de nuevo : >>> ').strip()) : 
+    pass 
+print('El valor ingresado para la base es :', base := float(base))
+
+bandera = False
+while bandera := not es_numero_real( altura := input('Ingrese un numero real ¿? : >>> ' if not bandera else '...algo salio mal; intente de nuevo : >>> ').strip()) : 
+    pass 
+print('El valor ingresado para la altura es :', altura := float(altura), f'\nEl area total del triangulo Iso es : {base}*{altura}/2 = {(base*altura/2):.4f}')
