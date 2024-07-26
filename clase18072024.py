@@ -72,21 +72,36 @@ def es_numero_real(cadena : str) -> bool:
 '''Crea un programa que pida al usuario elr adio de un circulo y calcule su area.'''
 
 # PI = 3.1416
-# radio = float (input('Ingrese el radio del circulo para calcular el perimetro, area y spuerficie(esfera) ¿? : >>> ').strip())
-# print(f'El perimetro es : {2*PI*radio:.4f} u.m.\nEl area es : {PI*radio**2:.4f} u.m.\nLa superficie (esfera 3D) : {(4/3)*PI*radio**2:.4f} u.m.')
+# radio = float (input('Ingrese el radio del circulo para calcular el perimetro, area y volumen(esfera) ¿? : >>> ').strip())
+# print(f'El perimetro es : {2*PI*radio:.4f} u.m.\nEl area es : {PI*radio**2:.4f} u.m.^2\nLa volumen (esfera 3D) : {(4/3)*PI*radio**3:.4f} u.m.^3')
 
 '''Escribe un programa que pida la base y altura de un triangulo Isoceles y retorne su area por pantalla.'''
 # := operador walrus... cortesia de GPT.
 
-base = 0
-altura = 0
-print('Calcular el area de un triangulo Isoceles.')
-bandera = False
-while bandera := not es_numero_real( base := input('Ingrese un numero real ¿? : >>> ' if not bandera else '...algo salio mal; intente de nuevo : >>> ').strip()) : 
-    pass 
-print('El valor ingresado para la base es :', base := float(base))
+# base = 0
+# altura = 0
+# print('Calcular el area de un triangulo Isoceles.')
+# bandera = False
+# while bandera := not es_numero_real( base := input('Ingrese un numero real ¿? : >>> ' if not bandera else '...algo salio mal; intente de nuevo : >>> ').strip()) : 
+#     pass 
+# print('El valor ingresado para la base es :', base := float(base))
 
-bandera = False
-while bandera := not es_numero_real( altura := input('Ingrese un numero real ¿? : >>> ' if not bandera else '...algo salio mal; intente de nuevo : >>> ').strip()) : 
-    pass 
-print('El valor ingresado para la altura es :', altura := float(altura), f'\nEl area total del triangulo Iso es : {base}*{altura}/2 = {(base*altura/2):.4f}')
+# bandera = False
+# while bandera := not es_numero_real( altura := input('Ingrese un numero real ¿? : >>> ' if not bandera else '...algo salio mal; intente de nuevo : >>> ').strip()) : 
+#     pass 
+# print('El valor ingresado para la altura es :', altura := float(altura), f'\nEl area total del triangulo Iso es : {base}*{altura}/2 = {(base*altura/2):.4f}')
+
+'''Crea un programa que pida al usuario una cantidad en dolares y la convierta a euros 0.84eu/uss'''
+
+#print(f'La cantidad correspondiente en euros es : >>> {float (input('Ingrese la cantidad en dolares ¿? : >>> ').strip())*0.84:.2f}')
+
+'''Crea un programa que pida al usuario una palabra y muestr en pantalla cuantas letras tiene.'''
+
+#print(f'La cantidad de caracteres en la frase ingresada es : >>> {len(input('Ingrese una frase ¿? : >>> ').strip())}')
+
+'''Escribe un programa que solicite al usuario su fecha de nacimiento en fomrato dd/mm/aaaa y luego imprima su edad en anios.'''
+
+fecha_actual = input('Fecha actual (dd/mm/aaaa) ¿? : >>> ')
+fecha_nacimiento = input('Fecha de nacimiento (dd/mm/aaaa) ¿? : >>> ')
+
+print(f'Edad aproximada : >>> {int (fecha_actual.split('/')[2])- int (fecha_nacimiento.split('/')[2])}')
