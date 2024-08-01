@@ -25,20 +25,19 @@
 #Importaciones necesarias----------------------------------------------------------------------------------------------------------------------
 import os
 import time
-#from itertools import chain
 from pathlib import Path
+#from itertools import chain
 
 #Info del documento ejecutado------------------------------------------------------------------------------------------------------------------
 os.system('cls') 
-print("Mi ubicacion es :", os.path.dirname(os.path.abspath(__file__)))
+print("EL programa que esta ejecutando se encuentra ubicado en :", os.path.dirname(os.path.abspath(__file__)))
 
 #Apertura del documento a analizar-------------------------------------------------------------------------------------------------------------
 def abrir_un_documento() -> str:
-    os.system('cls')
 
     ruta = input('Ingrese a continuacion la ruta absoluta del documento ')
     
-    if Path.exists(ruta) and Path.is_file(ruta) and Path(ruta).suffix == '.txt':
+    if Path(ruta).exists() and Path(ruta).is_file() and Path(ruta).suffix == '.txt':
         with open(ruta, 'r') as documento :
             return documento.read()    
     else : 
@@ -60,20 +59,49 @@ def limpieza_de_texto(texto = None) -> list:
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
 #Obtencion de frecuencias empleando ciclos-----------------------------------------------------------------------------------------------------
-def frecuencias_palabras_en_texto(lista : list) -> None:
+def frecuencias_palabras_en_texto(lista : list) -> tuple:
+
     cont = 0
     aux = lista[0]
     lista.sort()
+    conjunto_palabra_frecuencia = dict()
+    estadisticas = dict()
     
     for palabra in lista : 
         if palabra == aux :
             cont += 1
+        else :# Ver uso de else como fin rregular de un ciclo.
+            conjunto_palabra_frecuencia[aux] = cont
+            aux = palabra
+            cont = 1
+    conjunto_palabra_frecuencia[aux] = cont
+    
+    conjunto_palabra_frecuencia = dict(sorted(conjunto_palabra_frecuencia.items(), key=lambda item: item[1]))
+
+    estadisticas['ESTADISTICA >>> TOTAL DE PALABRAS : '] = len(lista)
+    estadisticas['ESTADISTICA >>> PALABRA MAS LARGA : '] = max(lista)
+    estadisticas['ESTADISTICA >>> PALABRA MAS CORTA : '] = min(lista)
+    
+    return (conjunto_palabra_frecuencia, estadisticas)
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+#Funcion es palindromo-------------------------------------------------------------------------------------------------------------------------
+def es_palindromo(lista : list) ->bool:
+
+    if len(lista)%2 == 0:
+        print('PAR')
+        for indice in range(0, int(len(lista)/2)):
+            print(f'{lista[indice]} - {lista[-indice-1]}')
+            if lista[indice] != lista[-indice-1] :
+                return False
+        return True
     else :
-        print(f'La palabra ({aux}) aparece un total de {cont} veces.')
-        aux = palabra
-        cont = 1
-    print(f'La palabra ({aux}) aparece un total de {cont} veces.')
-    print(f'En total se identificaron unas {len(lista)} palabras.\nLa mayor es {max(lista)}.\nLa menor es {min(lista)}.')
+        print('IMPAR')
+        for indice in range(0, int((len(lista)-1)/2)): #Aqui primero restar 1 a la longitud, luego dividir; caso contrario falla por truncado
+            print(f'{lista[indice]} - {lista[-indice-1]}')
+            if lista[indice] != lista[-indice-1] :
+                return False
+        return True
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
 #Funcion de espera-----------------------------------------------------------------------------------------------------------------------------
@@ -87,17 +115,27 @@ def funcion_de_espera(lapso : int = 3, mensaje : str = 'En : ') -> None:
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
 #Cuerpo principal del programa-----------------------------------------------------------------------------------------------------------------
-print('Menu.\n1 >>> Crea un archivo de texto.\n2 >>> Mostrar los archivos disponibles.\n3 >>> Modificar un archivo.'+
-      '\n4 >>> Eliminar un archivo de texto.\n5 >>> Mostrar un archivo de texto.\n6 >>> Salir.')
-
-opcion = None
-while not ((opcion := input('Opcion seleccionada ¿? : >>> ')).isdigit() and len(opcion)== 1 and int(opcion) in range(1,7)) :
-    os.system('cls')
-    funcion_de_espera(4, 'Algo salio mal intente nuevamente en :')
-print(f'Opcion selecionada : {opcion}')
 
 texto = abrir_un_documento()
+
 print(texto if texto is not None else 'Algo salio mal con la lectura...')
+
+lista_texto = limpieza_de_texto(texto)
+
+tupla_de_datos = frecuencias_palabras_en_texto(lista_texto)
+
+for k,v in tupla_de_datos[0].items():
+    print(f'Palabra : {k}; Frecuencia : {v}')
+
+for k,v in tupla_de_datos[1].items():
+    print(k,v)
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+#Pruebas---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
 #Borradores------------------------------------------------------------------------------------------------------------------------------------
@@ -107,11 +145,18 @@ print(texto if texto is not None else 'Algo salio mal con la lectura...')
 #'''Segundo intento, pero lo que se elimina sigue siendo limitado, y de yapa ascii puso de manera no continua los valores para simbolos de puntuacion'''
 # for codigo_ascii in chain(range(33,48) and range(58, 65) and range(91,97) and range(123, 127)): 
 #     texto.replace(chr(codigo_ascii),'')
-#----------------------------------------------------------------------------------------------------------------------------------------------
 
-#----------------------------------------------------------------------------------------------------------------------------------------------
 #Obtencion de frecuencias empleando casteo a set y metodo de la clase str(no resulto de manera correcta)
 # texto_no_repetido = set(lista_texto)
 # for palabra in texto_no_repetido :
 #     print(f'La palabra [{palabra}] aparece {texto.count(palabra)} veces en el texto.')
-#----------------------------------------------------------------------------------------------------------------------------------------------
+
+#Version con opciones de menu para Programa main
+# print('Menu.\n1 >>> Crea un archivo de texto.\n2 >>> Mostrar los archivos disponibles.\n3 >>> Modificar un archivo.'+
+#       '\n4 >>> Eliminar un archivo de texto.\n5 >>> Mostrar un archivo de texto.\n6 >>> Salir.')
+# opcion = None
+# while not ((opcion := input('Opcion seleccionada ¿? : >>> ')).isdigit() and len(opcion)== 1 and int(opcion) in range(1,7)) :
+#     os.system('cls')
+#     funcion_de_espera(4, 'Algo salio mal intente nuevamente en :')
+# print(f'Opcion selecionada : {opcion}')
+#---------------------------------------------------------------------------------------------------------------------------------------------
