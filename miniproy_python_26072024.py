@@ -26,37 +26,14 @@
 import os
 import time
 from pathlib import Path
+from modulo_de_funciones_propias import funcion_de_espera as banca
+from modulo_de_funciones_propias import abrir_un_documentotxt_imprimir as abrir
+from modulo_de_funciones_propias import desmenuzar_en_palabras_simples as desmenuzar
 #from itertools import chain
 
 #Info del documento ejecutado------------------------------------------------------------------------------------------------------------------
 os.system('cls') 
 print("EL programa que esta ejecutando se encuentra ubicado en :", os.path.dirname(os.path.abspath(__file__)))
-
-#Apertura del documento a analizar-------------------------------------------------------------------------------------------------------------
-def abrir_un_documento() -> str:
-
-    ruta = input('Ingrese a continuacion la ruta absoluta del documento ')
-    
-    if Path(ruta).exists() and Path(ruta).is_file() and Path(ruta).suffix == '.txt':
-        with open(ruta, 'r') as documento :
-            return documento.read()    
-    else : 
-        return None
-#----------------------------------------------------------------------------------------------------------------------------------------------
-
-#Limpieza del texto----------------------------------------------------------------------------------------------------------------------------
-def limpieza_de_texto(texto = None) -> list:
-    if texto is None: return None
-    
-    texto = (texto.lower()).strip()
-    texto_no_repetido = set(texto)
-
-    '''Esta segmento elimina del texto todo excepto letras, espacio y salto de linea.'''
-    for caracter in texto_no_repetido : 
-        if not(caracter.isalpha() or caracter is '\n' or caracter.isspace()) :
-            texto = texto.replace(caracter,'')    
-    return texto.split(None)
-#----------------------------------------------------------------------------------------------------------------------------------------------
 
 #Obtencion de frecuencias empleando ciclos-----------------------------------------------------------------------------------------------------
 def frecuencias_palabras_en_texto(lista : list) -> tuple:
@@ -104,23 +81,14 @@ def es_palindromo(lista : list) ->bool:
         return True
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
-#Funcion de espera-----------------------------------------------------------------------------------------------------------------------------
-def funcion_de_espera(lapso : int = 3, mensaje : str = 'En : ') -> None:
-    
-    for instante in range(lapso, 0,-1):
-        print(f'{mensaje} {instante}')
-        time.sleep(1)
-        os.system('cls')
-    return 
-#----------------------------------------------------------------------------------------------------------------------------------------------
 
 #Cuerpo principal del programa-----------------------------------------------------------------------------------------------------------------
 
-texto = abrir_un_documento()
+texto = abrir()
 
 print(texto if texto is not None else 'Algo salio mal con la lectura...')
 
-lista_texto = limpieza_de_texto(texto)
+lista_texto = desmenuzar(texto)
 
 tupla_de_datos = frecuencias_palabras_en_texto(lista_texto)
 
@@ -132,11 +100,6 @@ for k,v in tupla_de_datos[1].items():
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
-#Pruebas---------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-#----------------------------------------------------------------------------------------------------------------------------------------------
 
 #Borradores------------------------------------------------------------------------------------------------------------------------------------
 #'''Primer intento, hay que especificar que eliminar.'''
