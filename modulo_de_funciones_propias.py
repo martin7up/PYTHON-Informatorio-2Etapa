@@ -1,6 +1,7 @@
 from pathlib import Path
 import time
 import os
+
 #----------------------------------------------------------------------------------------------------------------------------------------------
 #Devuelve True si una cadena representa un Real
 def es_numero_real(cadena : str) -> bool: 
@@ -11,27 +12,36 @@ def es_numero_real(cadena : str) -> bool:
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 #Devuelve una cadena que solo contiene letras
-def limpiar_texto(texto : str = None, dejar_numeros : bool = False) -> str: 
+def limpiar_texto(texto : str = None, dejar_numeros : bool = False, dejar_espacios : bool = True) -> str: 
     
     if not texto: #Si el texto es None se interpreta como falso, se niega, y por lo tanto se ejecuta el retorno None
         return None 
-    if texto.isspace() == True: 
-        print('RETORNO UN VACIO 2')
+    if texto.isspace():
         return None
     
     texto = (texto.lower()).strip()
     texto_no_repetido = set(texto)
 
-    '''Esta segmento elimina del texto todo excepto letras, espacio y salto de linea; numeros se eliminan por defecto pero se puede cambiar en parametros'''
-    if dejar_numeros: #De esta manera se hace una sola vez la comprobacion, si se coloca dentro del ciclo se comprueba en vano en cada pasada
+    if dejar_numeros == False and dejar_espacios == True : 
         for caracter in texto_no_repetido : 
-            if not(caracter.isalnum() or caracter is '\n' or caracter.isspace()) :
+            if not(caracter.isalpha() or caracter == '\n' or caracter.isspace()) :
                 texto = texto.replace(caracter,'')
-    else :
+        return texto                                     
+    elif dejar_numeros == True and dejar_espacios == False:
         for caracter in texto_no_repetido : 
-            if not(caracter.isalpha() or caracter is '\n' or caracter.isspace()) :
+            if not(caracter.isalnum() or caracter == '\n') :
                 texto = texto.replace(caracter,'')
-    return texto
+        return texto
+    elif dejar_numeros == False and dejar_espacios == False:
+        for caracter in texto_no_repetido : 
+            if not(caracter.isalpha() or caracter == '\n') :
+                texto = texto.replace(caracter,'')
+        return texto                              
+    else : 
+        for caracter in texto_no_repetido : 
+            if not(caracter.isalnum() or caracter == '\n' or caracter.isspace()) :
+                texto = texto.replace(caracter,'')
+        return texto              
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
@@ -75,4 +85,66 @@ def abrir_un_documentotxt_imprimir(mensaje : str = 'Ingrese a continuacion la ru
             return documento.read()    
     else : 
         return None
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#Funcion es palindromo
+def es_palindromo(lista : list) ->bool:
+    
+    if not lista: return None
+
+    if len(lista)%2 == 0:
+        print('PAR')
+        for indice in range(0, int(len(lista)/2)):
+            print(f'{lista[indice]} - {lista[-indice-1]}')
+            if lista[indice] != lista[-indice-1] :
+                return False
+        return True
+    else :
+        print('IMPAR')
+        for indice in range(0, int((len(lista)-1)/2)): #Aqui primero restar 1 a la longitud, luego dividir; caso contrario falla por truncado
+            print(f'{lista[indice]} - {lista[-indice-1]}')
+            if lista[indice] != lista[-indice-1] :
+                return False
+        return True
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#Obtencion de frecuencias empleando ciclos, a partir de una lista que contiene strings
+def frecuencias_palabras_en_texto(lista : list) -> tuple:
+
+    if not lista: return None
+
+    cont = 0
+    aux = lista[0]
+    lista.sort()
+    conjunto_palabra_frecuencia = dict()
+    estadisticas = dict()
+    
+    for palabra in lista : 
+        if palabra == aux :
+            cont += 1
+        else :# Ver uso de else como fin rregular de un ciclo.
+            conjunto_palabra_frecuencia[aux] = cont
+            aux = palabra
+            cont = 1
+    conjunto_palabra_frecuencia[aux] = cont
+    
+    conjunto_palabra_frecuencia = dict(reversed(sorted(conjunto_palabra_frecuencia.items(), key=lambda item: len(item[0]))))#Ordenar palabras por longitud de cadena
+
+    estadisticas['ESTADISTICA >>> TOTAL DE PALABRAS : '] = len(lista)
+    estadisticas['ESTADISTICA >>> PALABRA MAS LARGA : '] = max(lista, key=len)#Obtener la palabra de mayor longitud
+    estadisticas['ESTADISTICA >>> PALABRA MAS CORTA : '] = min(lista, key=len)
+    
+    return (conjunto_palabra_frecuencia, estadisticas)
+#----------------------------------------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------------------------------------------------------------------
+#Verificar si un string posee caracteres repetidos
+def tiene_caracteres_repetidos(cadena : str = None) -> bool:
+    
+    if not cadena : 
+        return None
+    
+    return len(set(cadena)) == len(cadena)
 #----------------------------------------------------------------------------------------------------------------------------------------------

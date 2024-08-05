@@ -24,65 +24,19 @@
 
 #Importaciones necesarias----------------------------------------------------------------------------------------------------------------------
 import os
-import time
-from pathlib import Path
-from modulo_de_funciones_propias import funcion_de_espera as banca
 from modulo_de_funciones_propias import abrir_un_documentotxt_imprimir as abrir
+from modulo_de_funciones_propias import tiene_caracteres_repetidos as caracteres
 from modulo_de_funciones_propias import desmenuzar_en_palabras_simples as desmenuzar
+from modulo_de_funciones_propias import frecuencias_palabras_en_texto as estadisticas
 #from itertools import chain
 
 #Info del documento ejecutado------------------------------------------------------------------------------------------------------------------
 os.system('cls') 
 print("EL programa que esta ejecutando se encuentra ubicado en :", os.path.dirname(os.path.abspath(__file__)))
 
-#Obtencion de frecuencias empleando ciclos-----------------------------------------------------------------------------------------------------
-def frecuencias_palabras_en_texto(lista : list) -> tuple:
-
-    cont = 0
-    aux = lista[0]
-    lista.sort()
-    conjunto_palabra_frecuencia = dict()
-    estadisticas = dict()
-    
-    for palabra in lista : 
-        if palabra == aux :
-            cont += 1
-        else :# Ver uso de else como fin rregular de un ciclo.
-            conjunto_palabra_frecuencia[aux] = cont
-            aux = palabra
-            cont = 1
-    conjunto_palabra_frecuencia[aux] = cont
-    
-    conjunto_palabra_frecuencia = dict(sorted(conjunto_palabra_frecuencia.items(), key=lambda item: item[1]))
-
-    estadisticas['ESTADISTICA >>> TOTAL DE PALABRAS : '] = len(lista)
-    estadisticas['ESTADISTICA >>> PALABRA MAS LARGA : '] = max(lista)
-    estadisticas['ESTADISTICA >>> PALABRA MAS CORTA : '] = min(lista)
-    
-    return (conjunto_palabra_frecuencia, estadisticas)
-#----------------------------------------------------------------------------------------------------------------------------------------------
-
-#Funcion es palindromo-------------------------------------------------------------------------------------------------------------------------
-def es_palindromo(lista : list) ->bool:
-
-    if len(lista)%2 == 0:
-        print('PAR')
-        for indice in range(0, int(len(lista)/2)):
-            print(f'{lista[indice]} - {lista[-indice-1]}')
-            if lista[indice] != lista[-indice-1] :
-                return False
-        return True
-    else :
-        print('IMPAR')
-        for indice in range(0, int((len(lista)-1)/2)): #Aqui primero restar 1 a la longitud, luego dividir; caso contrario falla por truncado
-            print(f'{lista[indice]} - {lista[-indice-1]}')
-            if lista[indice] != lista[-indice-1] :
-                return False
-        return True
-#----------------------------------------------------------------------------------------------------------------------------------------------
-
-
 #Cuerpo principal del programa-----------------------------------------------------------------------------------------------------------------
+
+print('\n')
 
 texto = abrir()
 
@@ -90,13 +44,25 @@ print(texto if texto is not None else 'Algo salio mal con la lectura...')
 
 lista_texto = desmenuzar(texto)
 
-tupla_de_datos = frecuencias_palabras_en_texto(lista_texto)
+tupla_de_datos = estadisticas(lista_texto)
+
+print('\n')
 
 for k,v in tupla_de_datos[0].items():
-    print(f'Palabra : {k}; Frecuencia : {v}')
+    print(f'Palabra : [{k}];    Frecuencia : {v}')
+
+print('\n')
+
+for k,v in tupla_de_datos[0].items():
+    if caracteres(k) :
+        print(k, ' es la palabra de mayor longitud y que primero aparece en la lista, cuyos caracteres son todos distintos.')
+        break
+
+print('\n')
 
 for k,v in tupla_de_datos[1].items():
     print(k,v)
+
 
 #----------------------------------------------------------------------------------------------------------------------------------------------
 
